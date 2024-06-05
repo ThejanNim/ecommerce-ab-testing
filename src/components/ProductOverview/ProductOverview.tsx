@@ -54,6 +54,7 @@ const product = {
     details:
         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 }
+
 const reviews = { href: '#', average: 4, totalCount: 117 };
 
 function classNames(...classes: string[]) {
@@ -265,9 +266,15 @@ export const ProductOverview = () => {
 
                             <button
                                 type="submit"
+                                onClick={() => {
+                                    let cart = localStorage.getItem('cart');
+                                    let cartArray = cart ? JSON.parse(cart) : [];
+                                    cartArray.push({ name: "Basic Tee 6-Pack", price: '$192', });
+                                    localStorage.setItem('cart', JSON.stringify(cartArray));
+                                }}
                                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
-                                Add to bag
+                                Add to cart
                             </button>
                         </form>
                     </div>
