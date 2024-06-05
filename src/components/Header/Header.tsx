@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, Fragment } from "react";
 import {
     Dialog,
@@ -15,6 +17,7 @@ import {
     TransitionChild,
 } from '@headlessui/react';
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ShoppingCart } from "../ShoppingCart";
 
 const navigation = {
     categories: [
@@ -145,8 +148,11 @@ function classNames(...classes: string[]) {
 
 export const Header = () => {
     const [open, setOpen] = useState(false);
-    
-  return (
+    const [isCartOpen, setIsCartOpen] = useState(false);
+
+    const cartItem = localStorage.getItem("cart");
+    const cartItems = cartItem ? JSON.parse(cartItem) : null;
+    return (
         <div>
             <Transition show={open}>
                 <Dialog className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -438,7 +444,6 @@ export const Header = () => {
                                     </a>
                                 </div>
 
-                                {/* Search */}
                                 <div className="flex lg:ml-6">
                                     <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
                                         <span className="sr-only">Search</span>
@@ -446,22 +451,24 @@ export const Header = () => {
                                     </a>
                                 </div>
 
-                                {/* Cart */}
-                                <div className="ml-4 flow-root lg:ml-6">
-                                    <a href="#" className="group -m-2 flex items-center p-2">
+                                <div className="ml-4 flow-root lg:ml-6" onClick={() => setIsCartOpen(true)}>
+                                    <div className="group -m-2 flex items-center p-2">
                                         <ShoppingBagIcon
                                             className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                             aria-hidden="true"
+
                                         />
-                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartItems?.length ?? 0}</span>
                                         <span className="sr-only">items in cart, view bag</span>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </nav>
             </header>
+
+            <ShoppingCart open={isCartOpen} setOpen={setIsCartOpen} />
         </div>
     )
 }
